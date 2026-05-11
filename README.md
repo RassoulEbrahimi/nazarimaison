@@ -33,27 +33,27 @@ The workflow in `.github/workflows/deploy.yml` builds only `frontend/` and deplo
 Default workflow base path:
 
 ```text
-VITE_BASE_PATH=/nazari-maison-web/
+VITE_BASE_PATH=/nazarimaison/
 ```
 
-If the GitHub Pages repo or project path is `/nazarimaison/`, change the workflow value to:
+Final staging URL:
 
 ```text
-VITE_BASE_PATH=/nazarimaison/
+https://rassoulebrahimi.github.io/nazarimaison/
 ```
 
 Manual staging build:
 
 ```bash
 cd frontend
-VITE_BASE_PATH=/nazari-maison-web/ npm run build
+VITE_BASE_PATH=/nazarimaison/ npm run build
 ```
 
 On PowerShell:
 
 ```powershell
 cd frontend
-$env:VITE_BASE_PATH="/nazari-maison-web/"
+$env:VITE_BASE_PATH="/nazarimaison/"
 npm run build
 ```
 

@@ -38,7 +38,7 @@ jobs:
       - name: Build frontend
         run: npm run build
         env:
-          VITE_BASE_PATH: /nazari-maison-web/
+          VITE_BASE_PATH: /nazarimaison/
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
