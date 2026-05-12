@@ -1,6 +1,7 @@
 import { withBasePath } from './basePath.js';
 
 const API_BASE = import.meta.env.VITE_API_BASE || '/backend/api';
+const STATIC_PRODUCTS_ONLY = !import.meta.env.VITE_API_BASE && import.meta.env.PROD && import.meta.env.BASE_URL !== '/';
 
 const fallbackLinks = {
   bale: 'https://ble.ir/nazari_maison',
@@ -59,6 +60,10 @@ async function fetchStaticProducts() {
 }
 
 export async function fetchProducts() {
+  if (STATIC_PRODUCTS_ONLY) {
+    return fetchStaticProducts();
+  }
+
   try {
     const data = await request('products.php');
     const products = Array.isArray(data.products) ? data.products.map(normalizeProduct) : [];
