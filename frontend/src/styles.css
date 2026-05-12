@@ -93,21 +93,21 @@ p {
   width: min(100%, 470px);
   min-height: 100vh;
   margin: 0 auto;
-  padding: 18px 10px 44px;
+  padding: 10px 10px 44px;
 }
 
 .profile {
   display: grid;
-  grid-template-columns: 92px minmax(0, 1fr);
-  gap: 14px;
+  grid-template-columns: 82px minmax(0, 1fr);
+  gap: 12px;
   align-items: start;
-  padding: 20px 0 16px;
+  padding: 14px 0 12px;
   border-bottom: 1px solid var(--line);
 }
 
 .avatar {
   position: relative;
-  width: 88px;
+  width: 78px;
   aspect-ratio: 1;
   border-radius: 50%;
   display: grid;
@@ -125,9 +125,9 @@ p {
 
 .avatar img {
   position: absolute;
-  inset: 7px;
-  width: calc(100% - 14px);
-  height: calc(100% - 14px);
+  inset: 6px;
+  width: calc(100% - 12px);
+  height: calc(100% - 12px);
   border-radius: 50%;
   object-fit: cover;
   background: var(--cream-soft);
@@ -164,10 +164,8 @@ p {
   gap: 10px;
 }
 
-.username,
 .meta-line,
 .eyebrow,
-.small-admin-link,
 .back-link,
 .stats span,
 .tabs button,
@@ -176,26 +174,17 @@ p {
   font-family: "JetBrains Mono", monospace;
 }
 
-.username {
-  margin: 0 0 4px;
-  color: var(--burgundy);
-  direction: ltr;
-  text-align: right;
-  font-size: 0.78rem;
-  font-weight: 500;
-}
-
 h1 {
-  margin-bottom: 5px;
+  margin-bottom: 4px;
   color: var(--ink);
-  font-size: 1.42rem;
+  font-size: 1.26rem;
   font-weight: 700;
-  line-height: 1.45;
+  line-height: 1.35;
   letter-spacing: 0;
 }
 
 .meta-line {
-  margin: 0 0 12px;
+  margin: 0 0 8px;
   color: var(--gold);
   direction: ltr;
   text-align: right;
@@ -204,18 +193,18 @@ h1 {
 }
 
 .bio {
-  margin-bottom: 10px;
+  margin-bottom: 8px;
   color: var(--body-copy);
   font-size: 0.88rem;
   font-weight: 400;
-  line-height: 1.95;
+  line-height: 1.75;
 }
 
 .profile-links {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
-  margin-bottom: 14px;
+  margin-bottom: 10px;
   color: var(--burgundy);
   direction: ltr;
   justify-content: flex-end;
@@ -223,7 +212,6 @@ h1 {
   font-weight: 500;
 }
 
-.small-admin-link,
 .back-link {
   color: var(--muted);
   font-size: 0.68rem;
@@ -234,7 +222,7 @@ h1 {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 7px;
-  margin: 12px 0 14px;
+  margin: 8px 0 0;
   text-align: center;
 }
 
@@ -262,12 +250,6 @@ h1 {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-}
-
-.profile .actions,
-.modal-actions {
-  display: grid;
-  grid-template-columns: 1.45fr 0.72fr 0.72fr;
 }
 
 .button {
@@ -508,8 +490,7 @@ h1 {
 .grid-state,
 .notice,
 .form-error,
-.orders-panel,
-.settings-panel {
+.orders-panel {
   margin: 16px 0;
   padding: 16px;
   border-radius: 8px;
@@ -517,14 +498,63 @@ h1 {
   border: 1px solid var(--line);
 }
 
-.settings-panel {
+.settings-fab {
+  position: fixed;
+  z-index: 9;
+  left: max(12px, calc(50% - 224px));
+  bottom: 16px;
+  width: 38px;
+  height: 38px;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  color: var(--ink);
+  background: var(--panel-bg);
+  box-shadow: 0 8px 24px rgba(31, 25, 22, 0.14);
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.settings-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
   display: grid;
+  align-items: end;
+  justify-items: center;
+  padding: 12px;
+  background: rgba(31, 25, 22, 0.36);
+}
+
+.settings-panel {
+  width: min(420px, 100%);
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 12px 12px 10px 10px;
+  background: var(--panel-bg);
+  box-shadow: var(--shadow);
+  display: grid;
+  gap: 12px;
+}
+
+.settings-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
   gap: 12px;
 }
 
 .settings-panel h2 {
   margin-bottom: 0;
   font-size: 1.02rem;
+}
+
+.sheet-close {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--cream-soft);
+  color: var(--ink);
+  font-size: 1.06rem;
 }
 
 .theme-switcher {
@@ -591,50 +621,64 @@ h1 {
   line-height: 1.85;
 }
 
+.order-link {
+  width: fit-content;
+  min-width: 96px;
+}
+
 .modal-backdrop {
   position: fixed;
   inset: 0;
   z-index: 10;
   display: grid;
-  align-items: end;
+  align-items: center;
   justify-items: center;
-  padding: 12px;
-  background: var(--overlay);
+  padding: 10px;
+  background: rgba(8, 7, 7, 0.84);
 }
 
 .product-modal {
   position: relative;
   width: min(470px, 100%);
-  max-height: 92vh;
+  max-height: calc(100vh - 20px);
   overflow: auto;
   display: grid;
   grid-template-columns: 1fr;
-  background: var(--cream-soft);
-  border: 1px solid var(--line);
-  border-radius: 10px;
-  box-shadow: var(--shadow);
+  background: #0d0c0c;
+  border: 1px solid rgba(246, 240, 230, 0.12);
+  border-radius: 12px;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.45);
 }
 
 .modal-image {
+  overflow: hidden;
   aspect-ratio: 1;
-  background: #ead8b8;
+  background: #050505;
+}
+
+.modal-image video {
+  object-fit: contain;
+  background: #050505;
 }
 
 .modal-copy {
-  padding: 18px;
+  padding: 13px 14px 15px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 6px;
 }
 
 .modal-copy h2 {
   margin-bottom: 0;
-  font-size: 1.22rem;
+  color: #f6f0e6;
+  font-size: 1rem;
 }
 
 .modal-copy p {
-  color: var(--muted);
-  line-height: 1.8;
+  margin-bottom: 0;
+  color: #cdbfaa;
+  line-height: 1.65;
+  font-size: 0.84rem;
 }
 
 .eyebrow {
@@ -649,10 +693,10 @@ h1 {
 .availability {
   width: fit-content;
   border-radius: 6px;
-  padding: 6px 10px;
-  background: rgba(47, 107, 76, 0.1);
-  color: var(--success);
-  font-size: 0.78rem;
+  padding: 4px 8px;
+  background: rgba(246, 240, 230, 0.08);
+  color: #d8b56b;
+  font-size: 0.7rem;
   font-weight: 700;
 }
 
@@ -673,9 +717,12 @@ h1 {
   z-index: 2;
   top: 10px;
   left: 10px;
-  width: 34px;
-  height: 34px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
+  background: rgba(8, 7, 7, 0.72);
+  border: 1px solid rgba(246, 240, 230, 0.32);
+  color: #f6f0e6;
   font-size: 1.16rem;
 }
 
@@ -811,16 +858,16 @@ textarea {
 
 @media (min-width: 760px) {
   .app-shell {
-    padding-top: 30px;
+    padding-top: 20px;
   }
 
   .profile {
-    grid-template-columns: 104px minmax(0, 1fr);
-    gap: 18px;
+    grid-template-columns: 92px minmax(0, 1fr);
+    gap: 16px;
   }
 
   .avatar {
-    width: 100px;
+    width: 88px;
   }
 
   .highlight-ring {
@@ -838,12 +885,12 @@ textarea {
   }
 
   .profile {
-    grid-template-columns: 78px minmax(0, 1fr);
-    gap: 12px;
+    grid-template-columns: 70px minmax(0, 1fr);
+    gap: 10px;
   }
 
   .avatar {
-    width: 74px;
+    width: 66px;
   }
 
   .avatar span {
@@ -855,17 +902,12 @@ textarea {
   }
 
   h1 {
-    font-size: 1.2rem;
+    font-size: 1.06rem;
   }
 
   .bio,
   .button {
     font-size: 0.77rem;
-  }
-
-  .profile .actions,
-  .modal-actions {
-    grid-template-columns: 1.75fr 0.6fr 0.6fr;
   }
 
   .highlights {

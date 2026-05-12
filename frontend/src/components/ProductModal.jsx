@@ -1,4 +1,4 @@
-function ProductModal({ links, onClose, product }) {
+function ProductModal({ onClose, product }) {
   return (
     <div className="modal-backdrop" onClick={onClose} role="presentation">
       <article className="product-modal" onClick={(event) => event.stopPropagation()} role="dialog" aria-modal="true">
@@ -15,15 +15,10 @@ function ProductModal({ links, onClose, product }) {
         <div className="modal-copy">
           <p className="eyebrow">{product.category || 'Nazari Maison'}</p>
           <h2>{product.title}</h2>
-          <p>{product.description || 'برای دریافت جزئیات این مدل با مزون در ارتباط باشید.'}</p>
+          {product.description && <p>{product.description}</p>}
           <span className={`availability ${product.availability}`}>
-            {product.availability === 'sold_out' ? 'ناموجود' : 'قابل سفارش'}
+            {product.availability === 'sold_out' ? 'ناموجود' : 'موجود'}
           </span>
-          <div className="actions modal-actions">
-            <a className="button primary" href={links.bale} rel="noreferrer" target="_blank">سفارش در بله</a>
-            <a className="button secondary" href={links.eitaa} rel="noreferrer" target="_blank">ایتا</a>
-            <a className="button ghost" href={links.phone}>تماس</a>
-          </div>
         </div>
       </article>
     </div>

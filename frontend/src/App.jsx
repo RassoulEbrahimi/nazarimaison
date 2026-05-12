@@ -25,6 +25,7 @@ function App() {
   const [activeTab, setActiveTab] = useState('all');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [settingsOpen, setSettingsOpen] = useState(false);
   const [themeMode, setThemeMode] = useState(() => localStorage.getItem('nazari-theme-mode') || 'system');
   const [notificationsEnabled, setNotificationsEnabled] = useState(
     () => localStorage.getItem('nazari-new-product-notifications') === 'enabled',
@@ -120,11 +121,16 @@ function App() {
 
   return (
     <main className="app-shell">
-      <ProfileHeader links={links} stats={stats} />
+      <ProfileHeader stats={stats} />
+      <button className="settings-fab" onClick={() => setSettingsOpen(true)} type="button" aria-label="تنظیمات">
+        ⚙
+      </button>
       <SettingsPanel
         notificationsEnabled={notificationsEnabled}
+        onClose={() => setSettingsOpen(false)}
         onNotificationToggle={handleNotificationToggle}
         onThemeChange={setThemeMode}
+        open={settingsOpen}
         themeMode={themeMode}
       />
       <Highlights products={products} />
@@ -147,18 +153,14 @@ function App() {
         <section className="orders-panel">
           <p className="eyebrow">ORDER NOTE</p>
           <h2>سفارش اختصاصی</h2>
-          <p>برای ثبت سفارش، انتخاب پارچه، تغییر فرم یا هماهنگی اندازه، از بله یا تماس مستقیم با مزون اقدام کنید.</p>
-          <div className="actions modal-actions">
-            <a className="button primary" href={links.bale} rel="noreferrer" target="_blank">ثبت سفارش در بله</a>
-            <a className="button secondary" href={links.eitaa} rel="noreferrer" target="_blank">ایتا</a>
-            <a className="button ghost" href={links.phone}>تماس</a>
-          </div>
+          <p>برای هماهنگی سفارش اختصاصی، از کانال بله با مزون در ارتباط باشید.</p>
+          <a className="button primary order-link" href={links.bale} rel="noreferrer" target="_blank">بله</a>
         </section>
       ) : (
         <ProductGrid loading={loading} onSelect={setSelectedProduct} products={visibleProducts} />
       )}
       {selectedProduct && (
-        <ProductModal links={links} onClose={() => setSelectedProduct(null)} product={selectedProduct} />
+        <ProductModal onClose={() => setSelectedProduct(null)} product={selectedProduct} />
       )}
       <PwaUpdatePrompt />
     </main>

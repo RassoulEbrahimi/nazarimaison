@@ -17,7 +17,7 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'prompt',
-      includeAssets: ['icons/*.png', 'images/profile/Profile_Picture.png'],
+      includeAssets: ['icons/*.png', 'images/profile/Profile_Picture.jpg'],
       workbox: {
         cleanupOutdatedCaches: true,
         globPatterns: ['**/*.{js,css,html,ico,png,svg,jpg,jpeg,webp,json,woff2}'],
