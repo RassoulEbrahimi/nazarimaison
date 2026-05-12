@@ -5,8 +5,8 @@
   --ink: #1f1916;
   --body-copy: #554941;
   --muted: #8d8176;
-  --burgundy: #6b1f2e;
-  --burgundy-deep: #4c101d;
+  --burgundy: #405de6;
+  --burgundy-deep: #3150d4;
   --gold: #b8914d;
   --rose: #c78691;
   --line: #e5dacb;
@@ -15,7 +15,7 @@
   --overlay: rgba(31, 25, 22, 0.72);
   --success: #2f6b4c;
   --danger: #a82638;
-  --shadow: 0 22px 60px rgba(76, 16, 29, 0.16);
+  --shadow: 0 22px 60px rgba(64, 93, 230, 0.13);
   font-family: Vazirmatn, Tahoma, Arial, sans-serif;
 }
 
@@ -25,8 +25,8 @@
   --ink: #f4eadc;
   --body-copy: #d9c9b5;
   --muted: #b4a391;
-  --burgundy: #c05b6d;
-  --burgundy-deep: #8f2f43;
+  --burgundy: #5f7bff;
+  --burgundy-deep: #405de6;
   --gold: #d8b56b;
   --rose: #d99aa7;
   --line: #3a302b;
@@ -60,7 +60,7 @@ body {
 
 :root[data-theme='dark'] body {
   background:
-    radial-gradient(circle at 50% 0, rgba(107, 31, 46, 0.24), transparent 34rem),
+    radial-gradient(circle at 50% 0, rgba(64, 93, 230, 0.16), transparent 34rem),
     linear-gradient(180deg, #171313, #0f0f10),
     var(--cream);
 }
@@ -114,10 +114,10 @@ p {
   place-items: center;
   align-content: center;
   gap: 0;
-  background: linear-gradient(145deg, var(--cream-soft), #ead8b8);
-  border: 1px solid var(--burgundy);
-  box-shadow: 0 0 0 3px var(--cream), 0 0 0 5px rgba(184, 145, 77, 0.72);
-  color: var(--burgundy-deep);
+  background: var(--cream-soft);
+  border: 1px solid var(--line);
+  box-shadow: 0 3px 12px rgba(31, 25, 22, 0.08);
+  color: var(--ink);
   direction: ltr;
   text-align: center;
   overflow: hidden;
@@ -125,9 +125,9 @@ p {
 
 .avatar img {
   position: absolute;
-  inset: 6px;
-  width: calc(100% - 12px);
-  height: calc(100% - 12px);
+  inset: 2px;
+  width: calc(100% - 4px);
+  height: calc(100% - 4px);
   border-radius: 50%;
   object-fit: cover;
   background: var(--cream-soft);
@@ -271,7 +271,7 @@ h1 {
 
 .button:hover {
   transform: translateY(-1px);
-  box-shadow: 0 10px 24px rgba(76, 16, 29, 0.11);
+  box-shadow: 0 10px 24px rgba(64, 93, 230, 0.12);
 }
 
 .button.primary {
@@ -330,7 +330,7 @@ h1 {
   color: var(--burgundy);
   background: #ead8b8;
   border: 2px solid var(--cream-soft);
-  box-shadow: 0 0 0 1px var(--burgundy), 0 0 0 3px rgba(184, 145, 77, 0.72);
+  box-shadow: 0 0 0 1px rgba(64, 93, 230, 0.38);
   font-family: "Cormorant Garamond", Georgia, serif;
   font-size: 1.1rem;
   font-weight: 700;

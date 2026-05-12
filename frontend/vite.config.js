@@ -60,7 +60,7 @@ export default defineConfig({
         display: 'standalone',
         start_url: '.',
         scope: '.',
-        theme_color: '#6b1f2e',
+        theme_color: '#405de6',
         background_color: '#f6f0e6',
         icons: [
           {

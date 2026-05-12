@@ -12,13 +12,13 @@ function ProfileHeader({ stats }) {
         <div className="profile-topline">
           <div>
             <h1>Nazari Maison · نظری مزون</h1>
-            <p className="meta-line">ATELIER · TEHRAN · EST. ۱۳۹۸</p>
+            <p className="meta-line">Made with love</p>
           </div>
         </div>
         <p className="bio">
-          طراحی و دوخت لباس زنانه، مزونی و سفارش اختصاصی.
+          •سفارش فقط بصورت آنلاين
           <br />
-          به دلیل محدودیت دسترسی به اینستاگرام، مدل‌های جدید از اینجا و کانال بله قابل مشاهده است.
+          •سفارش از طريق دايركت و كانال تلگرام
         </p>
         <p className="profile-links">
           <a href="https://t.me/nazari_maison" rel="noreferrer" target="_blank">t.me/nazari_maison</a>
