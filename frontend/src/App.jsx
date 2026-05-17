@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { fetchProducts } from './api.js';
+import { fetchProducts, fetchSettings, fetchStories } from './api.js';
 import ProfileHeader from './components/ProfileHeader.jsx';
 import Highlights from './components/Highlights.jsx';
 import ProductGrid from './components/ProductGrid.jsx';
@@ -22,6 +22,8 @@ const toPersianDigits = (value) => String(value).replace(/\d/g, (digit) => '۰۱
 function App() {
   const [products, setProducts] = useState([]);
   const [links, setLinks] = useState(defaultLinks);
+  const [settings, setSettings] = useState(null);
+  const [stories, setStories] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [activeTab, setActiveTab] = useState('all');
   const [loading, setLoading] = useState(true);
@@ -46,8 +48,20 @@ function App() {
     }
   };
 
+  const loadPublicData = async () => {
+    const [settingsData, storiesData] = await Promise.all([
+      fetchSettings(),
+      fetchStories(),
+    ]);
+    setSettings(settingsData);
+    setStories(storiesData);
+  };
+
   useEffect(() => {
     loadProducts();
+    if (!isAdmin) {
+      loadPublicData();
+    }
   }, []);
 
   useEffect(() => {
@@ -75,13 +89,14 @@ function App() {
     localStorage.setItem('nazari-new-product-notifications', nextValue ? 'enabled' : 'disabled');
   };
 
-  const stats = useMemo(() => {
-    return {
-      models: toPersianDigits(products.length),
-      orders: '۳۸۴',
-      contact: '۴۱/۵K',
-    };
-  }, [products.length]);
+  const stats = useMemo(() => ({
+    models:       toPersianDigits(products.length),
+    modelsLabel:  settings?.stat_models_label  || 'مدل‌ها',
+    orders:       settings?.stat_orders_value  || '۳۸۴',
+    ordersLabel:  settings?.stat_orders_label  || 'سفارش‌ها',
+    contact:      settings?.stat_contact_value || '۴۱/۵K',
+    contactLabel: settings?.stat_contact_label || 'ارتباط',
+  }), [products.length, settings]);
 
   const visibleProducts = useMemo(() => {
     if (activeTab === 'images') {
@@ -104,16 +119,7 @@ function App() {
       <main className="app-shell admin-shell">
         <AdminLogin>
           {({ csrfToken, onLogout }) => (
-            <AdminDashboard
-              csrfToken={csrfToken}
-              error={error}
-              links={links}
-              loading={loading}
-              onDelete={loadProducts}
-              onLogout={onLogout}
-              onSaved={loadProducts}
-              products={products}
-            />
+            <AdminDashboard csrfToken={csrfToken} onLogout={onLogout} />
           )}
         </AdminLogin>
       </main>
@@ -125,7 +131,7 @@ function App() {
   return (
     <main className="app-shell">
       <PullToRefresh modalOpen={isModalOpen} />
-      <ProfileHeader stats={stats} />
+      <ProfileHeader settings={settings} stats={stats} />
       <button className="settings-fab" onClick={() => setSettingsOpen(true)} type="button" aria-label="تنظیمات">
         ⚙
       </button>
@@ -137,7 +143,7 @@ function App() {
         open={settingsOpen}
         themeMode={themeMode}
       />
-      <Highlights products={products} />
+      <Highlights products={products} stories={stories} />
       {error && <p className="notice">{error}</p>}
       <nav className="tabs" aria-label="دسته‌بندی مدل‌ها">
         <button className={activeTab === 'all' ? 'active' : ''} onClick={() => setActiveTab('all')} type="button">

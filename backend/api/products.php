@@ -5,11 +5,13 @@ require_once __DIR__ . '/config.php';
 require_method(['GET', 'POST']);
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    // ?all=1 with a valid session returns all products (including hidden) for admin use
+    $show_all = !empty($_GET['all']) && is_logged_in();
     send_json([
-        'ok' => true,
-        'products' => read_products(),
-        'links' => [
-            'bale' => BALE_URL,
+        'ok'       => true,
+        'products' => read_products(!$show_all),
+        'links'    => [
+            'bale'  => BALE_URL,
             'eitaa' => EITAA_URL,
             'phone' => PHONE_URL,
         ],

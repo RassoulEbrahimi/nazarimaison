@@ -113,3 +113,63 @@ export function deleteProduct(id, csrfToken) {
   body.append('csrf_token', csrfToken);
   return request('products.php', { method: 'POST', body });
 }
+
+// Admin: all products including hidden ones — requires active session
+export async function fetchAllProducts() {
+  const data = await request('products.php?all=1');
+  return { ...data, products: Array.isArray(data.products) ? data.products.map(normalizeProduct) : [] };
+}
+
+function normalizeStory(story) {
+  return { ...story, media_url: withBasePath(story.media_url || '') };
+}
+
+// Public: already filtered by backend (active + within date window)
+export async function fetchStories() {
+  try {
+    const data = await request('stories.php');
+    return Array.isArray(data.stories) ? data.stories.map(normalizeStory) : [];
+  } catch {
+    return [];
+  }
+}
+
+// Admin: all stories regardless of status or date — requires active session
+export async function fetchAllStories() {
+  const data = await request('stories.php?all=1');
+  return Array.isArray(data.stories) ? data.stories.map(normalizeStory) : [];
+}
+
+export function saveStory(formData) {
+  return request('stories.php', { method: 'POST', body: formData });
+}
+
+export function hideStory(id, csrfToken) {
+  const body = new FormData();
+  body.append('action', 'hide');
+  body.append('id', id);
+  body.append('csrf_token', csrfToken);
+  return request('stories.php', { method: 'POST', body });
+}
+
+export function deleteStory(id, csrfToken) {
+  const body = new FormData();
+  body.append('action', 'delete');
+  body.append('id', id);
+  body.append('csrf_token', csrfToken);
+  return request('stories.php', { method: 'POST', body });
+}
+
+// Returns null on failure — callers fall back to hardcoded defaults
+export async function fetchSettings() {
+  try {
+    const data = await request('settings.php');
+    return data.settings || null;
+  } catch {
+    return null;
+  }
+}
+
+export function saveSettings(formData) {
+  return request('settings.php', { method: 'POST', body: formData });
+}
