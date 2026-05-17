@@ -51,11 +51,12 @@ function AdminDashboard({ csrfToken, onLogout }) {
   return (
     <section className="admin-dashboard">
       <header className="admin-header">
-        <div>
-          <a className="back-link" href={withBasePath('/')}>مشاهده سایت</a>
-          <h1>پنل مدیریت نظری مزون</h1>
+        <div className="admin-avatar">ن</div>
+        <h1>پنل مدیریت مزون نظری</h1>
+        <a className="back-link" href={withBasePath('/')}>مشاهده سایت</a>
+        <div className="admin-header-actions">
+          <button className="button ghost" onClick={onLogout} type="button">خروج</button>
         </div>
-        <button className="button ghost" onClick={onLogout} type="button">خروج</button>
       </header>
 
       {error   && <p className="form-error">{error}</p>}
@@ -75,7 +76,7 @@ function AdminDashboard({ csrfToken, onLogout }) {
 
       {/* ── Products tab ─────────────────────────────────────────── */}
       {tab === 'products' && (
-        <>
+        <div className="admin-panel-body">
           <ProductForm
             csrfToken={csrfToken}
             editing={editingProduct}
@@ -140,12 +141,12 @@ function AdminDashboard({ csrfToken, onLogout }) {
               </article>
             ))}
           </div>
-        </>
+        </div>
       )}
 
       {/* ── Stories tab ──────────────────────────────────────────── */}
       {tab === 'stories' && (
-        <>
+        <div className="admin-panel-body">
           <StoryForm
             csrfToken={csrfToken}
             editing={editingStory}
@@ -162,19 +163,21 @@ function AdminDashboard({ csrfToken, onLogout }) {
             onEdit={(story) => { setEditingStory(story); setMessage(''); }}
             onRefresh={() => { setMessage(''); reload(); }}
           />
-        </>
+        </div>
       )}
 
       {/* ── Settings tab ─────────────────────────────────────────── */}
       {tab === 'settings' && (
-        <SettingsForm
-          csrfToken={csrfToken}
-          settings={settings}
-          onSaved={(msg) => {
-            setMessage(msg || 'تنظیمات ذخیره شد.');
-            reload();
-          }}
-        />
+        <div className="admin-panel-body">
+          <SettingsForm
+            csrfToken={csrfToken}
+            settings={settings}
+            onSaved={(msg) => {
+              setMessage(msg || 'تنظیمات ذخیره شد.');
+              reload();
+            }}
+          />
+        </div>
       )}
     </section>
   );
