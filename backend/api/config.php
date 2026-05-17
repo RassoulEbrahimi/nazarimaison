@@ -298,15 +298,17 @@ function read_products(bool $public_only = false): array
             $row['featured'] = (bool)($row['featured'] ?? false);
             $products[]      = normalize_product($row);
         }
-        if (empty($products)) {
-            return sample_products();
+        // When SQLite is empty fall through to the JSON file below, which may
+        // have been populated by a data migration (e.g. seeding from the static
+        // frontend products.json). sample_products() is only the final fallback.
+        if (!empty($products)) {
+            if ($public_only) {
+                $products = array_values(
+                    array_filter($products, static fn(array $p): bool => $p['status'] !== 'hidden')
+                );
+            }
+            return $products;
         }
-        if ($public_only) {
-            $products = array_values(
-                array_filter($products, static fn(array $p): bool => $p['status'] !== 'hidden')
-            );
-        }
-        return $products;
     }
 
     $raw      = file_get_contents(PRODUCTS_JSON);
@@ -347,49 +349,60 @@ function save_products_json(array $products): void
     write_json_file(PRODUCTS_JSON, array_values($products));
 }
 
+function _sqlite_upsert(SQLite3 $db, array $product): void
+{
+    $stmt = $db->prepare(
+        'INSERT INTO products (
+            id, title, description, category, availability, pinned,
+            image_url, image_path, type, video_url, video_path,
+            poster, poster_path, featured, status, created_at, updated_at
+         ) VALUES (
+            :id, :title, :description, :category, :availability, :pinned,
+            :image_url, :image_path, :type, :video_url, :video_path,
+            :poster, :poster_path, :featured, :status, :created_at, :updated_at
+         )
+         ON CONFLICT(id) DO UPDATE SET
+            title        = excluded.title,
+            description  = excluded.description,
+            category     = excluded.category,
+            availability = excluded.availability,
+            pinned       = excluded.pinned,
+            image_url    = excluded.image_url,
+            image_path   = excluded.image_path,
+            type         = excluded.type,
+            video_url    = excluded.video_url,
+            video_path   = excluded.video_path,
+            poster       = excluded.poster,
+            poster_path  = excluded.poster_path,
+            featured     = excluded.featured,
+            status       = excluded.status,
+            updated_at   = excluded.updated_at'
+    );
+    foreach ([
+        'id', 'title', 'description', 'category', 'availability',
+        'image_url', 'image_path', 'type', 'video_url', 'video_path',
+        'poster', 'poster_path', 'status', 'created_at', 'updated_at',
+    ] as $key) {
+        $stmt->bindValue(':' . $key, (string)($product[$key] ?? ''), SQLITE3_TEXT);
+    }
+    $stmt->bindValue(':pinned',   !empty($product['pinned'])   ? 1 : 0, SQLITE3_INTEGER);
+    $stmt->bindValue(':featured', !empty($product['featured']) ? 1 : 0, SQLITE3_INTEGER);
+    $stmt->execute();
+}
+
 function save_product(array $product): void
 {
     ensure_storage();
     $db = db();
 
     if ($db instanceof SQLite3) {
-        $stmt = $db->prepare(
-            'INSERT INTO products (
-                id, title, description, category, availability, pinned,
-                image_url, image_path, type, video_url, video_path,
-                poster, poster_path, featured, status, created_at, updated_at
-             ) VALUES (
-                :id, :title, :description, :category, :availability, :pinned,
-                :image_url, :image_path, :type, :video_url, :video_path,
-                :poster, :poster_path, :featured, :status, :created_at, :updated_at
-             )
-             ON CONFLICT(id) DO UPDATE SET
-                title        = excluded.title,
-                description  = excluded.description,
-                category     = excluded.category,
-                availability = excluded.availability,
-                pinned       = excluded.pinned,
-                image_url    = excluded.image_url,
-                image_path   = excluded.image_path,
-                type         = excluded.type,
-                video_url    = excluded.video_url,
-                video_path   = excluded.video_path,
-                poster       = excluded.poster,
-                poster_path  = excluded.poster_path,
-                featured     = excluded.featured,
-                status       = excluded.status,
-                updated_at   = excluded.updated_at'
-        );
-        foreach ([
-            'id', 'title', 'description', 'category', 'availability',
-            'image_url', 'image_path', 'type', 'video_url', 'video_path',
-            'poster', 'poster_path', 'status', 'created_at', 'updated_at',
-        ] as $key) {
-            $stmt->bindValue(':' . $key, (string)($product[$key] ?? ''), SQLITE3_TEXT);
+        // Seed SQLite from JSON on first write so migrated products are not lost.
+        if ((int)($db->querySingle('SELECT COUNT(*) FROM products') ?? 0) === 0) {
+            foreach (read_raw_products() as $seed) {
+                _sqlite_upsert($db, $seed);
+            }
         }
-        $stmt->bindValue(':pinned',   !empty($product['pinned'])   ? 1 : 0, SQLITE3_INTEGER);
-        $stmt->bindValue(':featured', !empty($product['featured']) ? 1 : 0, SQLITE3_INTEGER);
-        $stmt->execute();
+        _sqlite_upsert($db, $product);
         mirror_sqlite_to_json($db);
         return;
     }
