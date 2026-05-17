@@ -1048,26 +1048,33 @@ textarea {
 }
 
 .admin-header {
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  text-align: center;
-  padding: 22px 16px 16px;
+  justify-content: space-between;
+  text-align: right;
+  padding: 14px 16px;
   border-bottom: 1px solid var(--line);
   margin-bottom: 0;
-  position: relative;
-  gap: 6px;
+  position: static;
+  gap: 10px;
+}
+
+.admin-header-start {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .admin-avatar {
-  width: 52px;
-  height: 52px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--burgundy), var(--burgundy-deep));
-  color: #fff;
+  background: var(--cream);
+  border: 1px solid var(--line);
+  color: var(--muted);
   display: grid;
   place-items: center;
-  font-size: 1.5rem;
-  font-weight: 700;
+  flex-shrink: 0;
 }
 
 .admin-header h1 {
@@ -1075,19 +1082,17 @@ textarea {
   margin: 0;
 }
 
-.admin-header .back-link {
-  position: absolute;
-  right: 14px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 0.74rem;
+.admin-header-end {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
 }
 
-.admin-header-actions {
-  position: absolute;
-  left: 14px;
-  top: 50%;
-  transform: translateY(-50%);
+.admin-header .back-link {
+  position: static;
+  transform: none;
+  font-size: 0.74rem;
 }
 
 .admin-dashboard > .form-error,

@@ -51,10 +51,17 @@ function AdminDashboard({ csrfToken, onLogout }) {
   return (
     <section className="admin-dashboard">
       <header className="admin-header">
-        <div className="admin-avatar">ن</div>
-        <h1>پنل مدیریت مزون نظری</h1>
-        <a className="back-link" href={withBasePath('/')}>مشاهده سایت</a>
-        <div className="admin-header-actions">
+        <div className="admin-header-start">
+          <div className="admin-avatar">
+            <svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor" aria-hidden="true">
+              <circle cx="12" cy="8" r="4" />
+              <path d="M4 20c0-3.9 3.6-7 8-7s8 3.1 8 7" />
+            </svg>
+          </div>
+          <h1>پنل مدیریت مزون نظری</h1>
+        </div>
+        <div className="admin-header-end">
+          <a className="back-link" href={withBasePath('/')}>مشاهده سایت</a>
           <button className="button ghost" onClick={onLogout} type="button">خروج</button>
         </div>
       </header>
