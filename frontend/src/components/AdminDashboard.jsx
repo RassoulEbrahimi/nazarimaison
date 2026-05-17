@@ -92,10 +92,12 @@ function AdminDashboard({ csrfToken, onLogout }) {
             {products.map((product) => (
               <article className="admin-product" key={product.id}>
                 <div className="admin-thumb">
-                  {product.video_url ? (
-                    <video muted playsInline preload="metadata" src={product.video_url} />
-                  ) : product.image_url ? (
+                  {product.image_url ? (
                     <img alt={product.title} loading="lazy" src={product.image_url} />
+                  ) : product.poster ? (
+                    <img alt={product.title} loading="lazy" src={product.poster} />
+                  ) : product.video_url ? (
+                    <video muted playsInline preload="metadata" src={product.video_url} />
                   ) : (
                     <span>{product.title.charAt(0)}</span>
                   )}
