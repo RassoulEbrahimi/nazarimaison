@@ -1,3 +1,15 @@
+async function handleManualRefresh() {
+  try {
+    if ('serviceWorker' in navigator) {
+      const reg = await navigator.serviceWorker.getRegistration();
+      if (reg) await reg.update().catch(() => null);
+    }
+  } catch (_) {
+    // ignore
+  }
+  window.location.reload();
+}
+
 function SettingsPanel({ notificationsEnabled, onClose, onNotificationToggle, onThemeChange, open, themeMode }) {
   if (!open) {
     return null;
@@ -35,6 +47,10 @@ function SettingsPanel({ notificationsEnabled, onClose, onNotificationToggle, on
             {notificationsEnabled ? 'فعال' : 'فعال‌سازی'}
           </button>
         </div>
+
+        <button className="button full" onClick={handleManualRefresh} type="button" id="settings-manual-refresh">
+          ↺ تازه‌سازی
+        </button>
       </section>
     </div>
   );

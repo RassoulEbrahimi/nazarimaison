@@ -30,7 +30,13 @@ function ProductGrid({ loading, onSelect, products }) {
             type="button"
           >
             {product.type === 'video' && product.video_url ? (
-              <video muted playsInline preload="metadata" src={product.video_url} />
+              product.poster ? (
+                // Use pre-generated JPG poster for reliable thumbnail on iOS/Safari
+                <img alt={product.title} loading="lazy" src={product.poster} />
+              ) : (
+                // Fallback: browser video preview (may be blank on Safari)
+                <video muted playsInline preload="metadata" src={product.video_url} />
+              )
             ) : product.image_url ? (
               <img alt={product.title} loading="lazy" src={product.image_url} />
             ) : (

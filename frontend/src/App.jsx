@@ -8,6 +8,7 @@ import AdminLogin from './components/AdminLogin.jsx';
 import AdminDashboard from './components/AdminDashboard.jsx';
 import SettingsPanel from './components/SettingsPanel.jsx';
 import PwaUpdatePrompt from './components/PwaUpdatePrompt.jsx';
+import PullToRefresh from './components/PullToRefresh.jsx';
 import { pathnameWithoutBase } from './basePath.js';
 
 const defaultLinks = {
@@ -119,8 +120,11 @@ function App() {
     );
   }
 
+  const isModalOpen = Boolean(selectedProduct) || settingsOpen;
+
   return (
     <main className="app-shell">
+      <PullToRefresh modalOpen={isModalOpen} />
       <ProfileHeader stats={stats} />
       <button className="settings-fab" onClick={() => setSettingsOpen(true)} type="button" aria-label="تنظیمات">
         ⚙

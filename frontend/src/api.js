@@ -27,6 +27,8 @@ function normalizeProduct(product) {
   const videoUrl = withBasePath(product.video_url || product.video || '');
   const availability = product.availability || (product.available === false ? 'sold_out' : 'available');
 
+  const posterUrl = product.poster ? withBasePath(product.poster) : undefined;
+
   return {
     ...product,
     id: String(product.id || crypto.randomUUID()),
@@ -39,6 +41,7 @@ function normalizeProduct(product) {
     pinned: Boolean(product.pinned),
     image_url: imageUrl,
     video_url: videoUrl,
+    poster: posterUrl,
     thumbnail: withBasePath(product.thumbnail || imageUrl || videoUrl),
     video_like: type === 'video' || Boolean(product.video_like),
   };

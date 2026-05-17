@@ -931,3 +931,46 @@ textarea {
     flex-direction: column;
   }
 }
+
+/* ── Pull-to-Refresh indicator ─────────────────────────────── */
+.ptr-indicator {
+  position: fixed;
+  z-index: 50;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%) translateY(calc(var(--ptr-y, 0px) - 100%));
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 18px;
+  border-radius: 0 0 20px 20px;
+  background: var(--panel-bg);
+  border: 1px solid var(--line);
+  border-top: 0;
+  box-shadow: 0 8px 28px rgba(64, 93, 230, 0.14);
+  color: var(--body-copy);
+  font-size: 0.78rem;
+  font-weight: 600;
+  white-space: nowrap;
+  pointer-events: none;
+  transition: transform 80ms linear;
+  direction: rtl;
+  font-family: Vazirmatn, Tahoma, Arial, sans-serif;
+}
+
+.ptr-spinner {
+  font-size: 1.1rem;
+  color: var(--burgundy);
+  display: inline-block;
+  transition: transform 200ms ease;
+}
+
+@keyframes ptr-rotate {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+.ptr-spin {
+  animation: ptr-rotate 0.8s linear infinite;
+}
+
