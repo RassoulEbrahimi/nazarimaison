@@ -1,6 +1,14 @@
 import { withBasePath } from '../basePath.js';
 
-function ProfileHeader({ stats }) {
+function ProfileHeader({ settings, stats }) {
+  const bioLine1    = settings?.bio           || '•سفارش فقط بصورت آنلاين';
+  const bioLine2    = settings?.bio_line2     || '•سفارش از طريق دايركت و كانال تلگرام';
+  const telegramUrl = settings?.telegram_url  || 'https://t.me/nazari_maison';
+  const baleUrl     = settings?.bale_url      || 'https://ble.ir/nazari_maison';
+
+  const telegramDisplay = telegramUrl.replace(/^https?:\/\//, '');
+  const baleDisplay     = baleUrl.replace(/^https?:\/\//, '');
+
   return (
     <section className="profile" aria-label="Nazari Maison profile">
       <div className="avatar" aria-hidden="true">
@@ -16,27 +24,27 @@ function ProfileHeader({ stats }) {
           </div>
         </div>
         <p className="bio">
-          •سفارش فقط بصورت آنلاين
+          {bioLine1}
           <br />
-          •سفارش از طريق دايركت و كانال تلگرام
+          {bioLine2}
         </p>
         <p className="profile-links">
-          <a href="https://t.me/nazari_maison" rel="noreferrer" target="_blank">t.me/nazari_maison</a>
+          <a href={telegramUrl} rel="noreferrer" target="_blank">{telegramDisplay}</a>
           <span>·</span>
-          <a href="https://ble.ir/nazari_maison" rel="noreferrer" target="_blank">ble.ir/nazari_maison</a>
+          <a href={baleUrl} rel="noreferrer" target="_blank">{baleDisplay}</a>
         </p>
         <div className="stats" aria-label="آمار">
           <div>
             <strong>{stats.models}</strong>
-            <span>مدل‌ها</span>
+            <span>{stats.modelsLabel || 'مدل‌ها'}</span>
           </div>
           <div>
             <strong>{stats.orders}</strong>
-            <span>سفارش‌ها</span>
+            <span>{stats.ordersLabel || 'سفارش‌ها'}</span>
           </div>
           <div>
             <strong>{stats.contact}</strong>
-            <span>ارتباط</span>
+            <span>{stats.contactLabel || 'ارتباط'}</span>
           </div>
         </div>
       </div>

@@ -974,3 +974,58 @@ textarea {
   animation: ptr-rotate 0.8s linear infinite;
 }
 
+/* ── Admin tab navigation (3-column, no sticky) ────────────────── */
+.admin-tabs {
+  position: static;
+  top: auto;
+  grid-template-columns: repeat(3, 1fr);
+  margin-bottom: 0;
+}
+
+/* ── Status / type badges ───────────────────────────────────────── */
+.badge {
+  display: inline-block;
+  padding: 2px 9px;
+  border-radius: 10px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  line-height: 1.6;
+}
+
+.badge-active {
+  background: #d4edda;
+  color: #2f6b4c;
+}
+
+.badge-hidden {
+  background: #f3e0e3;
+  color: #a82638;
+}
+
+.badge-video {
+  background: #e8e8ff;
+  color: #405de6;
+}
+
+/* ── Story rows — same grid as .admin-product ───────────────────── */
+.admin-story {
+  display: grid;
+  grid-template-columns: 78px 1fr auto;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.admin-story:last-child {
+  border-bottom: 0;
+}
+
+/* ── Small file-input hint text ─────────────────────────────────── */
+.field-hint {
+  display: block;
+  font-size: 0.72rem;
+  color: var(--ink);
+  opacity: 0.55;
+  margin-top: 3px;
+}
