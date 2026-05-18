@@ -12,7 +12,7 @@ const emptyProduct = {
   featured: false,
 };
 
-function ProductForm({ csrfToken, editing, onCancel, onSaved }) {
+function ProductForm({ csrfToken, editing, isOpen, onCancel, onSaved }) {
   const [form, setForm] = useState(emptyProduct);
   const [image, setImage] = useState(null);
   const [video, setVideo] = useState(null);
@@ -36,6 +36,13 @@ function ProductForm({ csrfToken, editing, onCancel, onSaved }) {
     const t = setTimeout(() => titleInputRef.current?.focus(), 320);
     return () => clearTimeout(t);
   }, [editing?.id]);
+
+  useEffect(() => {
+    if (!isOpen || editing) return;
+    formRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    const t = setTimeout(() => titleInputRef.current?.focus(), 320);
+    return () => clearTimeout(t);
+  }, [isOpen]);
 
   const isNewProduct = !editing || editing.id?.startsWith('sample-');
 
@@ -185,9 +192,9 @@ function ProductForm({ csrfToken, editing, onCancel, onSaved }) {
         <button className="button primary" disabled={saving} type="submit">
           {saving ? 'در حال ذخیره...' : 'ذخیره پست'}
         </button>
-        {editing && (
-          <button className="button ghost" onClick={onCancel} type="button">لغو ویرایش</button>
-        )}
+        <button className="button ghost" onClick={onCancel} type="button">
+          {editing ? 'لغو ویرایش' : 'لغو ایجاد پست'}
+        </button>
       </div>
     </form>
   );
