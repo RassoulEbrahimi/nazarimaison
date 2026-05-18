@@ -32,9 +32,9 @@ function normalizeProduct(product) {
   return {
     ...product,
     id: String(product.id || crypto.randomUUID()),
-    title: product.title || 'مدل نظری مزون',
+    title: product.title || 'پست نظری مزون',
     description: product.description || 'طراحی و دوخت مزونی، مناسب سفارش اختصاصی',
-    category: product.category || 'مدل جدید',
+    category: product.category || 'پست جدید',
     type,
     availability,
     available: availability !== 'sold_out',
@@ -47,16 +47,28 @@ function normalizeProduct(product) {
   };
 }
 
+// Sort newest-first globally; numeric ID suffix as stable tiebreaker when created_at is equal.
+function sortProducts(products) {
+  return [...products].sort((a, b) => {
+    const ta = new Date(a.created_at).getTime();
+    const tb = new Date(b.created_at).getTime();
+    if (tb !== ta) return tb - ta;
+    const numA = parseInt(a.id.replace(/\D+/g, '').slice(-3), 10) || 0;
+    const numB = parseInt(b.id.replace(/\D+/g, '').slice(-3), 10) || 0;
+    return numB - numA;
+  });
+}
+
 async function fetchStaticProducts() {
   const response = await fetch(withBasePath('/data/products.json'), { cache: 'no-store' });
   if (!response.ok) {
-    throw new Error('فهرست مدل‌های محلی در دسترس نیست.');
+    throw new Error('فهرست پست‌های محلی در دسترس نیست.');
   }
 
   const products = await response.json();
   return {
     ok: true,
-    products: Array.isArray(products) ? products.map(normalizeProduct) : [],
+    products: sortProducts(Array.isArray(products) ? products.map(normalizeProduct) : []),
     links: fallbackLinks,
     source: 'static',
   };
@@ -69,7 +81,7 @@ export async function fetchProducts() {
 
   try {
     const data = await request('products.php');
-    const products = Array.isArray(data.products) ? data.products.map(normalizeProduct) : [];
+    const products = sortProducts(Array.isArray(data.products) ? data.products.map(normalizeProduct) : []);
     if (products.length > 0) {
       return {
         ...data,
@@ -117,7 +129,7 @@ export function deleteProduct(id, csrfToken) {
 // Admin: all products including hidden ones — requires active session
 export async function fetchAllProducts() {
   const data = await request('products.php?all=1');
-  return { ...data, products: Array.isArray(data.products) ? data.products.map(normalizeProduct) : [] };
+  return { ...data, products: sortProducts(Array.isArray(data.products) ? data.products.map(normalizeProduct) : []) };
 }
 
 function normalizeStory(story) {
@@ -173,3 +185,4 @@ export async function fetchSettings() {
 export function saveSettings(formData) {
   return request('settings.php', { method: 'POST', body: formData });
 }
+

@@ -41,7 +41,7 @@ function AdminDashboard({ csrfToken, onLogout }) {
     if (!window.confirm(`حذف "${product.title}"؟`)) return;
     try {
       await deleteProduct(product.id, csrfToken);
-      setMessage('محصول حذف شد.');
+      setMessage('پست حذف شد.');
       reload();
     } catch (err) {
       setError(err.message);
@@ -90,12 +90,12 @@ function AdminDashboard({ csrfToken, onLogout }) {
             onCancel={() => setEditingProduct(null)}
             onSaved={() => {
               setEditingProduct(null);
-              setMessage('مدل ذخیره شد.');
+              setMessage('پست ذخیره شد.');
               reload();
             }}
           />
           <div className="admin-list">
-            <h2>مدل‌های فعلی ({products.length})</h2>
+            <h2>پست‌های فعلی ({products.length})</h2>
             {loading && <p>در حال بارگذاری...</p>}
             {products.map((product) => (
               <article className="admin-product" key={product.id}>

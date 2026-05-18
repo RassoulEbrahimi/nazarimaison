@@ -49,7 +49,7 @@ function AdminLogin({ children }) {
     <section className="admin-card login-card">
       <a className="back-link" href={withBasePath('/')}>بازگشت به سایت</a>
       <h1>ورود مدیریت نظری مزون</h1>
-      <p>برای بارگذاری مدل‌های جدید وارد شوید.</p>
+      <p>برای بارگذاری پست‌های جدید وارد شوید.</p>
       {error && <p className="form-error">{error}</p>}
       <form onSubmit={onSubmit}>
         <label>

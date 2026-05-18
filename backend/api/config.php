@@ -233,7 +233,7 @@ function sample_products(): array
         [
             'id'          => 'sample-1',
             'title'       => 'پیراهن مجلسی کرم',
-            'description' => 'نمونه نمایشی برای شروع گالری. پس از ورود به پنل مدیریت می‌توانید مدل واقعی بارگذاری کنید.',
+            'description' => 'نمونه نمایشی برای شروع گالری. پس از ورود به پنل مدیریت می‌توانید پست واقعی بارگذاری کنید.',
             'category'    => 'مجلسی',
             'type'        => 'image',
             'availability'=> 'available',
@@ -249,7 +249,7 @@ function sample_products(): array
         [
             'id'          => 'sample-2',
             'title'       => 'کت و دامن مزونی',
-            'description' => 'چیدمان سه ستونه برای مشاهده سریع مدل‌ها، مشابه حس آشنای شبکه‌های اجتماعی.',
+            'description' => 'چیدمان سه ستونه برای مشاهده سریع پست‌ها، مشابه حس آشنای شبکه‌های اجتماعی.',
             'category'    => 'مزونی',
             'type'        => 'image',
             'availability'=> 'available',
@@ -291,7 +291,7 @@ function read_products(bool $public_only = false): array
     $db = db();
 
     if ($db instanceof SQLite3) {
-        $result   = $db->query('SELECT * FROM products ORDER BY pinned DESC, datetime(created_at) DESC');
+        $result   = $db->query('SELECT * FROM products ORDER BY datetime(created_at) DESC');
         $products = [];
         while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
             $row['pinned']   = (bool)$row['pinned'];
@@ -318,10 +318,11 @@ function read_products(bool $public_only = false): array
     }
 
     usort($products, static function (array $a, array $b): int {
-        $pin_cmp = (int)!empty($b['pinned']) <=> (int)!empty($a['pinned']);
-        return $pin_cmp !== 0
-            ? $pin_cmp
-            : strcmp((string)($b['created_at'] ?? ''), (string)($a['created_at'] ?? ''));
+        $cmp = strtotime($b['created_at'] ?? '') <=> strtotime($a['created_at'] ?? '');
+        if ($cmp !== 0) return $cmp;
+        preg_match('/(\d+)$/', $a['id'] ?? '', $mA);
+        preg_match('/(\d+)$/', $b['id'] ?? '', $mB);
+        return (int)($mB[1] ?? 0) <=> (int)($mA[1] ?? 0);
     });
 
     $normalized = array_map('normalize_product', $products);
@@ -539,7 +540,7 @@ function default_settings(): array
     return [
         'bio'                => 'لباس‌های مجلسی و مزونی با دوخت اختصاصی',
         'bio_line2'          => 'سفارش آنلاین از طریق پیام',
-        'stat_models_label'  => 'مدل',
+        'stat_models_label'  => 'پست',
         'stat_orders_value'  => '۳۸۴',
         'stat_orders_label'  => 'سفارش',
         'stat_contact_value' => '۴۱/۵K',

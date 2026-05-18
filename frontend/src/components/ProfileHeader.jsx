@@ -36,7 +36,7 @@ function ProfileHeader({ settings, stats }) {
         <div className="stats" aria-label="آمار">
           <div>
             <strong>{stats.models}</strong>
-            <span>{stats.modelsLabel || 'مدل‌ها'}</span>
+            <span>{stats.modelsLabel || 'پست‌ها'}</span>
           </div>
           <div>
             <strong>{stats.orders}</strong>
