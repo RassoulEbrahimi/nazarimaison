@@ -4,7 +4,7 @@ import { saveSettings } from '../api.js';
 const defaults = {
   bio: '',
   bio_line2: '',
-  stat_models_label: 'مدل',
+  stat_models_label: 'پست',
   stat_orders_value: '۳۸۴',
   stat_orders_label: 'سفارش',
   stat_contact_value: '۴۱/۵K',
@@ -74,7 +74,7 @@ function SettingsForm({ csrfToken, settings, onSaved }) {
         <legend style={{ padding: '0 6px', fontSize: '0.85rem', fontWeight: 600 }}>آمارها</legend>
         <div className="form-grid">
           <label>
-            برچسب مدل
+            برچسب پست
             <input value={form.stat_models_label} onChange={set('stat_models_label')} />
           </label>
           <div />
