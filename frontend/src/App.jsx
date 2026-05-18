@@ -91,7 +91,7 @@ function App() {
 
   const stats = useMemo(() => ({
     models:       toPersianDigits(products.length),
-    modelsLabel:  settings?.stat_models_label  || 'مدل‌ها',
+    modelsLabel:  settings?.stat_models_label  || 'پست‌ها',
     orders:       settings?.stat_orders_value  || '۳۸۴',
     ordersLabel:  settings?.stat_orders_label  || 'سفارش‌ها',
     contact:      settings?.stat_contact_value || '۴۱/۵K',
@@ -145,7 +145,7 @@ function App() {
       />
       <Highlights products={products} stories={stories} />
       {error && <p className="notice">{error}</p>}
-      <nav className="tabs" aria-label="دسته‌بندی مدل‌ها">
+      <nav className="tabs" aria-label="دسته‌بندی پست‌ها">
         <button className={activeTab === 'all' ? 'active' : ''} onClick={() => setActiveTab('all')} type="button">
           همه
         </button>

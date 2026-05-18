@@ -11,16 +11,16 @@ function ProductGrid({ loading, onSelect, products }) {
   }, [products]);
 
   if (loading) {
-    return <div className="grid-state">در حال بارگذاری مدل‌ها...</div>;
+    return <div className="grid-state">در حال بارگذاری پست‌ها...</div>;
   }
 
   if (!products.length) {
-    return <div className="grid-state">هنوز مدلی ثبت نشده است.</div>;
+    return <div className="grid-state">هنوز پستی ثبت نشده است.</div>;
   }
 
   return (
     <>
-      <section className="product-grid" aria-label="مدل‌های مزون">
+      <section className="product-grid" aria-label="پست‌های مزون">
         {visibleProducts.map((product) => (
           <button
             aria-label={product.title}

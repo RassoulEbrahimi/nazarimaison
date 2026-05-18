@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { saveProduct } from '../api.js';
 
 const emptyProduct = {
@@ -19,6 +19,8 @@ function ProductForm({ csrfToken, editing, onCancel, onSaved }) {
   const [poster, setPoster] = useState(null);
   const [error, setError] = useState('');
   const [saving, setSaving] = useState(false);
+  const formRef = useRef(null);
+  const titleInputRef = useRef(null);
 
   useEffect(() => {
     setForm(editing ? { ...emptyProduct, ...editing } : emptyProduct);
@@ -27,6 +29,13 @@ function ProductForm({ csrfToken, editing, onCancel, onSaved }) {
     setPoster(null);
     setError('');
   }, [editing]);
+
+  useEffect(() => {
+    if (!editing) return;
+    formRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    const t = setTimeout(() => titleInputRef.current?.focus(), 320);
+    return () => clearTimeout(t);
+  }, [editing?.id]);
 
   const isNewProduct = !editing || editing.id?.startsWith('sample-');
 
@@ -63,14 +72,14 @@ function ProductForm({ csrfToken, editing, onCancel, onSaved }) {
   };
 
   return (
-    <form className="admin-card product-form" onSubmit={submit}>
-      <h2>{editing ? 'ویرایش مدل' : 'افزودن مدل جدید'}</h2>
+    <form className="admin-card product-form" onSubmit={submit} ref={formRef}>
+      <h2>{editing ? 'ویرایش پست' : 'افزودن پست جدید'}</h2>
       {error && <p className="form-error">{error}</p>}
 
       <div className="form-grid">
         <label>
           عنوان
-          <input required value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} />
+          <input ref={titleInputRef} required value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} />
         </label>
         <label>
           دسته‌بندی
@@ -113,7 +122,7 @@ function ProductForm({ csrfToken, editing, onCancel, onSaved }) {
 
       {form.type === 'image' && (
         <label>
-          تصویر مدل
+          تصویر پست
           <input
             accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp"
             required={isNewProduct}
@@ -129,7 +138,7 @@ function ProductForm({ csrfToken, editing, onCancel, onSaved }) {
       {form.type === 'video' && (
         <>
           <label>
-            ویدیو مدل
+            ویدیو پست
             <input
               accept=".mp4,.webm,.mov,video/mp4,video/webm,video/quicktime"
               required={isNewProduct}
@@ -174,10 +183,10 @@ function ProductForm({ csrfToken, editing, onCancel, onSaved }) {
 
       <div className="form-actions">
         <button className="button primary" disabled={saving} type="submit">
-          {saving ? 'در حال ذخیره...' : 'ذخیره مدل'}
+          {saving ? 'در حال ذخیره...' : 'ذخیره پست'}
         </button>
         {editing && (
-          <button className="button ghost" onClick={onCancel} type="button">انصراف</button>
+          <button className="button ghost" onClick={onCancel} type="button">لغو ویرایش</button>
         )}
       </div>
     </form>
