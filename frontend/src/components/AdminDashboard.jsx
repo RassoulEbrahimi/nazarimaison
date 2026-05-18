@@ -16,6 +16,7 @@ function AdminDashboard({ csrfToken, onLogout }) {
   const [error, setError] = useState('');
   const [editingProduct, setEditingProduct] = useState(null);
   const [editingStory, setEditingStory] = useState(null);
+  const [formOpen, setFormOpen] = useState(false);
 
   const reload = async () => {
     setError('');
@@ -84,16 +85,20 @@ function AdminDashboard({ csrfToken, onLogout }) {
       {/* ── Products tab ─────────────────────────────────────────── */}
       {tab === 'products' && (
         <div className="admin-panel-body">
-          <ProductForm
-            csrfToken={csrfToken}
-            editing={editingProduct}
-            onCancel={() => setEditingProduct(null)}
-            onSaved={() => {
-              setEditingProduct(null);
-              setMessage('پست ذخیره شد.');
-              reload();
-            }}
-          />
+          {formOpen && (
+            <ProductForm
+              csrfToken={csrfToken}
+              editing={editingProduct}
+              isOpen={formOpen}
+              onCancel={() => { setEditingProduct(null); setFormOpen(false); }}
+              onSaved={() => {
+                setEditingProduct(null);
+                setFormOpen(false);
+                setMessage('پست ذخیره شد.');
+                reload();
+              }}
+            />
+          )}
           <div className="admin-list">
             <h2>پست‌های فعلی ({products.length})</h2>
             {loading && <p>در حال بارگذاری...</p>}
@@ -130,7 +135,7 @@ function AdminDashboard({ csrfToken, onLogout }) {
                 <div className="admin-actions">
                   <button
                     className="button secondary"
-                    onClick={() => setEditingProduct(product)}
+                    onClick={() => { setEditingProduct(product); setFormOpen(true); }}
                     type="button"
                   >
                     ویرایش
@@ -185,6 +190,17 @@ function AdminDashboard({ csrfToken, onLogout }) {
             }}
           />
         </div>
+      )}
+
+      {tab === 'products' && !formOpen && (
+        <button
+          aria-label="افزودن پست جدید"
+          className="admin-fab"
+          onClick={() => { setEditingProduct(null); setFormOpen(true); }}
+          type="button"
+        >
+          +
+        </button>
       )}
     </section>
   );
