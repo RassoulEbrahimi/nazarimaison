@@ -1180,3 +1180,30 @@ textarea {
   min-height: 32px;
   padding: 5px 10px;
 }
+
+/* ── Admin floating create-post button ──────────────────────── */
+.admin-fab {
+  position: fixed;
+  bottom: 24px;
+  right: max(16px, calc(50% - 244px));
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: var(--burgundy);
+  color: #fff;
+  border: none;
+  font-size: 1.8rem;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 16px rgba(64, 93, 230, 0.38);
+  z-index: 15;
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+
+.admin-fab:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 24px rgba(64, 93, 230, 0.5);
+}
