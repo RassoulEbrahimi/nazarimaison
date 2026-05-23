@@ -3,7 +3,7 @@ import { fetchProducts, fetchSettings, fetchStories } from './api.js';
 import ProfileHeader from './components/ProfileHeader.jsx';
 import Highlights from './components/Highlights.jsx';
 import ProductGrid from './components/ProductGrid.jsx';
-import ProductModal from './components/ProductModal.jsx';
+import MediaViewer from './components/MediaViewer.jsx';
 import AdminLogin from './components/AdminLogin.jsx';
 import AdminDashboard from './components/AdminDashboard.jsx';
 import SettingsPanel from './components/SettingsPanel.jsx';
@@ -170,7 +170,7 @@ function App() {
         <ProductGrid loading={loading} onSelect={setSelectedProduct} products={visibleProducts} />
       )}
       {selectedProduct && (
-        <ProductModal onClose={() => setSelectedProduct(null)} product={selectedProduct} />
+        <MediaViewer onClose={() => setSelectedProduct(null)} product={selectedProduct} />
       )}
       <PwaUpdatePrompt />
     </main>
